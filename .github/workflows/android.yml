@@ -32,16 +32,20 @@ jobs:
             libffi-dev \
             libssl-dev
 
-      - name: Install python tools
+      - name: Install Python tools
         run: |
           pip install --upgrade pip
           pip install buildozer cython
 
+      - name: First Build (download Android SDK)
+        run: |
+          buildozer android debug || true
+
       - name: Accept Android licenses
         run: |
-          yes | sdkmanager --licenses || true
+          yes | ~/.buildozer/android/platform/android-sdk/cmdline-tools/latest/bin/sdkmanager --licenses || true
 
-      - name: Build APK
+      - name: Final Build APK
         run: |
           buildozer android debug
 
